@@ -203,115 +203,122 @@ class Application:
             formatted_date=today.strftime("%Y-%d-%m")
             self.add_note['Дата']=formatted_date
             return work_db.add_note(self.add_note)
-        
+            
         # Условие редактирования записи
         elif deytv in self.actions_3:
             func_vivod=work_db.search('все', '')
-            while True:
-                user_input=input('Выберите действие (укажите номер или само действие):\n0. Назад\n1. Редактировать\n2. Удалить\n> ').lower()
-                if user_input in self.actions_0:
-                    return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
-                elif user_input in self.actions_3_1:
-                    print(f'Все ваши записи:\n{func_vivod}')
-                    while True:
-                        user_input_index=input('Введите номер записи, которую вы хотите отредактировать:\n> ')
-                        try:
-                            number=int(user_input_index)
-                            break
-                        except ValueError:
-                            print('Введите число')
-                    user_input_type=input('Что вы хотите в ней отредактировать:\n0. Назад\n1. Дата\n2. Категория\n3. Сумма\n4. Описание\n> ')
+            if func_vivod == 'Ничего нет':
+                return 'У вас нет записей'
+            else:
+                while True:
+                    user_input=input('Выберите действие (укажите номер или само действие):\n0. Назад\n1. Редактировать\n2. Удалить\n> ').lower()
                     if user_input in self.actions_0:
                         return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
-                    elif user_input_type in self.actions_3_1_1:
-                        user_input_type='Дата'   
+                    elif user_input in self.actions_3_1:
+                        print(f'Все ваши записи:\n{func_vivod}')
                         while True:
-                            user_input_zap_now=input('Введите новое значение\n> ')
+                            user_input_index=input('Введите номер записи, которую вы хотите отредактировать:\n> ')
                             try:
-                                date=datetime.datetime.strptime(user_input_zap_now, "%Y-%m-%d")
+                                number=int(user_input_index)
                                 break
                             except ValueError:
-                                print('Введите дату правильно') 
-                    elif user_input_type in self.actions_3_1_2:
-                        user_input_type='Категория'
-                        while True:
-                            user_input_zap_now=input('Введите новое значение (укажите номер или само значение):\n0. Назад\n1. Доход\n2. Расход\n> ').lower()
-                            if user_input in self.actions_0:
-                                return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
-                            elif user_input_zap_now in self.actions_3_1_2_1:
-                                user_input_zap_now='Доход'
-                                break
-                            elif user_input_zap_now in self.actions_3_1_2_2:
-                                user_input_zap_now='Расход'
-                                break
-                            else:
-                                print('Нет такого варианта ответа')
-                    elif user_input_type in self.actions_3_1_3:
-                        user_input_type='Сумма'
-                        while True:
-                            user_input_zap=input('Введите новое значение:\n> ')
-                            try:
-                                prov_user_input=int(user_input_zap)
-                                user_input_zap_now=prov_user_input
-                                break
-                            except ValueError:
+                                print('Введите число')
+                        user_input_type=input('Что вы хотите в ней отредактировать:\n0. Назад\n1. Дата\n2. Категория\n3. Сумма\n4. Описание\n> ')
+                        if user_input in self.actions_0:
+                            return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
+                        elif user_input_type in self.actions_3_1_1:
+                            user_input_type='Дата'   
+                            while True:
+                                user_input_zap_now=input('Введите новое значение\n> ')
                                 try:
-                                    prov_user_input=float(user_input_zap)
+                                    date=datetime.datetime.strptime(user_input_zap_now, "%Y-%m-%d")
+                                    break
+                                except ValueError:
+                                    print('Введите дату правильно') 
+                        elif user_input_type in self.actions_3_1_2:
+                            user_input_type='Категория'
+                            while True:
+                                user_input_zap_now=input('Введите новое значение (укажите номер или само значение):\n0. Назад\n1. Доход\n2. Расход\n> ').lower()
+                                if user_input in self.actions_0:
+                                    return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
+                                elif user_input_zap_now in self.actions_3_1_2_1:
+                                    user_input_zap_now='Доход'
+                                    break
+                                elif user_input_zap_now in self.actions_3_1_2_2:
+                                    user_input_zap_now='Расход'
+                                    break
+                                else:
+                                    print('Нет такого варианта ответа')
+                        elif user_input_type in self.actions_3_1_3:
+                            user_input_type='Сумма'
+                            while True:
+                                user_input_zap=input('Введите новое значение:\n> ')
+                                try:
+                                    prov_user_input=int(user_input_zap)
                                     user_input_zap_now=prov_user_input
                                     break
                                 except ValueError:
-                                    print('Правильно введите новое значение')    
-                    elif user_input_type in self.actions_3_1_4:
-                        user_input_type='Описание'
-                        user_input_zap_now=input('Введите новое значение:\n>')
-                    return work_db.edit_entry(user_input_index, user_input_type, user_input_zap_now)
-                elif user_input in self.actions_3_2:
-                    print(f'Все ваши записи:\n{func_vivod}')
-                    while True:
-                        user_input=input('Укажите номер записи, которую надо удалить:\n> ')
-                        try:
-                            prov_user_input=int(user_input)
-                            if work_db.number_check(prov_user_input):
-                                break
-                        except ValueError:
-                            print('Введите номер записи:\n> ')
-                    return work_db.delete(user_input)
-                else:
-                    print('Нет такого варината ответа')
+                                    try:
+                                        prov_user_input=float(user_input_zap)
+                                        user_input_zap_now=prov_user_input
+                                        break
+                                    except ValueError:
+                                        print('Правильно введите новое значение')    
+                        elif user_input_type in self.actions_3_1_4:
+                            user_input_type='Описание'
+                            user_input_zap_now=input('Введите новое значение:\n>')
+                        return work_db.edit_entry(user_input_index, user_input_type, user_input_zap_now)
+                    elif user_input in self.actions_3_2:
+                        print(f'Все ваши записи:\n{func_vivod}')
+                        while True:
+                            user_input=input('Укажите номер записи, которую надо удалить:\n> ')
+                            try:
+                                prov_user_input=int(user_input)
+                                if work_db.number_check(prov_user_input):
+                                    break
+                            except ValueError:
+                                print('Введите номер записи:\n> ')
+                        return work_db.delete(user_input)
+                    else:
+                        print('Нет такого варината ответа')
         
         # Условие для поиска записи
         elif deytv in self.actions_4:
-            while True:
-                user_input=input('Введите способ поиска записи (укажите номер или сам способ):\n0. Назад\n1. Доход\n2. Расход\n3. Дата\n4. Сумма\n> ').lower()
-                if user_input in self.actions_0:
-                    return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
-                elif user_input in self.actions_4_1:
-                    result=work_db.search('доход', '')
-                    return result
-                elif user_input in self.actions_4_2:
-                    result=work_db.search('расход', '')
-                    return result
-                elif user_input in self.actions_4_3:
-                    while True:
-                        user_input=input('Введите дату в формате гггг-мм-дд\n> ')
-                        try:
-                            date=datetime.datetime.strptime(user_input, "%Y-%m-%d")
-                            break
-                        except ValueError:
-                            print('Введите дату правильно')
-                    result=work_db.search('дата', user_input)
-                    return result
-                elif user_input in self.actions_4_4:
-                    while True:
-                        user_input=input('Введите сумму:\n> ')
-                        try:
-                            float(user_input)
-                            self.add_note['Сумма']=user_input
-                            break
-                        except ValueError:
-                            print('Введите число')
-                    result=work_db.search('сумма', user_input)
-                    return result
+            func_vivod=work_db.search('все', '')
+            if func_vivod == 'Ничего нет':
+                return 'У вас нет записей'
+            else:
+                while True:
+                    user_input=input('Введите способ поиска записи (укажите номер или сам способ):\n0. Назад\n1. Доход\n2. Расход\n3. Дата\n4. Сумма\n> ').lower()
+                    if user_input in self.actions_0:
+                        return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
+                    elif user_input in self.actions_4_1:
+                        result=work_db.search('доход', '')
+                        return result
+                    elif user_input in self.actions_4_2:
+                        result=work_db.search('расход', '')
+                        return result
+                    elif user_input in self.actions_4_3:
+                        while True:
+                            user_input=input('Введите дату в формате гггг-мм-дд\n> ')
+                            try:
+                                date=datetime.datetime.strptime(user_input, "%Y-%m-%d")
+                                break
+                            except ValueError:
+                                print('Введите дату правильно')
+                        result=work_db.search('дата', user_input)
+                        return result
+                    elif user_input in self.actions_4_4:
+                        while True:
+                            user_input=input('Введите сумму:\n> ')
+                            try:
+                                float(user_input)
+                                self.add_note['Сумма']=user_input
+                                break
+                            except ValueError:
+                                print('Введите число')
+                        result=work_db.search('сумма', user_input)
+                        return result
 
     # Функция с основным циклом программы
     def run(self) -> None:
