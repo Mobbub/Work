@@ -106,10 +106,19 @@ class WorkDB:
             json.dump(new_data, file, ensure_ascii=False, indent=4)
         return 'Запись успешно удалена'
 
+    def number_check(self, number):
+        with open(self.file_path, 'r', encoding='utf-8') as f:
+            data=json.load(f)
+        keys=list(data.keys())
+        last_key=keys[-1]
+        if number > 0 and number <= int(last_key):
+            return True
+        return False
 
 # Основной класс взаимодействия программы с пользователем
 class Application:
     def __init__(self) -> None:
+        self.actions_0=['0', '0.', 'назад']
         self.actions=['1', '2', '3', '4', '1.', '2.', '3.', '4.', 'вывод баланса', 'добавление записи', 'редактирование записи', 'поиск по записям']
         self.actions_1=['1', '1.', 'вывод баланса', 'бал', 'баланс']
         self.actions_1_1=['1', '1.', 'бал', 'баланс']
@@ -146,8 +155,10 @@ class Application:
         # Условие вывода баланса
         if deytv in self.actions_1:
             while True:
-                user_input=input('Выберите действие (укажите номер или само действие):\n1. Баланс\n2. Доход\n3. Расход\n> ').lower()
-                if user_input in self.actions_1_1:
+                user_input=input('Выберите действие (укажите номер или само действие):\n0. Назад\n1. Баланс\n2. Доход\n3. Расход\n> ').lower()
+                if user_input in self.actions_0:
+                    return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
+                elif user_input in self.actions_1_1:
                     result=work_db.balance()
                     return f'Ваш балланс равен: {result}'
                 elif user_input in self.actions_1_2:
@@ -162,8 +173,10 @@ class Application:
         # Условие добавления записи
         elif deytv in self.actions_2:
             while True:
-                user_input = input('Выберите категорию записи (укажите номер или саму категорию):\n1. Доход\n2. Расход\n> ')
-                if user_input.lower() in self.actions_2_1:
+                user_input = input('Выберите категорию записи (укажите номер или саму категорию):\n0. Назад\n1. Доход\n2. Расход\n> ')
+                if user_input in self.actions_0:
+                    return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
+                elif user_input.lower() in self.actions_2_1:
                     self.add_note['Категория']='Доход'
                     break
                 elif user_input.lower() in self.actions_2_2:
@@ -194,8 +207,10 @@ class Application:
         elif deytv in self.actions_3:
             func_vivod=work_db.search('все', '')
             while True:
-                user_input=input('Выберите действие:\n1. Редактировать\n2. Удалить\n> ').lower()
-                if user_input in self.actions_3_1:
+                user_input=input('Выберите действие (укажите номер или само действие):\n0. Назад\n1. Редактировать\n2. Удалить\n> ').lower()
+                if user_input in self.actions_0:
+                    return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
+                elif user_input in self.actions_3_1:
                     print(f'Все ваши записи:\n{func_vivod}')
                     while True:
                         user_input_index=input('Введите номер записи, которую вы хотите отредактировать:\n> ')
@@ -204,8 +219,10 @@ class Application:
                             break
                         except ValueError:
                             print('Введите число')
-                    user_input_type=input('Что вы хотите в ней отредактировать:\n1. Дата\n2. Категория\n3. Сумма\n4. Описание\n> ')
-                    if user_input_type in self.actions_3_1_1:
+                    user_input_type=input('Что вы хотите в ней отредактировать:\n0. Назад\n1. Дата\n2. Категория\n3. Сумма\n4. Описание\n> ')
+                    if user_input in self.actions_0:
+                        return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
+                    elif user_input_type in self.actions_3_1_1:
                         user_input_type='Дата'   
                         while True:
                             user_input_zap_now=input('Введите новое значение\n> ')
@@ -217,8 +234,10 @@ class Application:
                     elif user_input_type in self.actions_3_1_2:
                         user_input_type='Категория'
                         while True:
-                            user_input_zap_now=input('Введите новое значение:\n1. Доход\n2. Расход\n> ').lower()
-                            if user_input_zap_now in self.actions_3_1_2_1:
+                            user_input_zap_now=input('Введите новое значение (укажите номер или само значение):\n0. Назад\n1. Доход\n2. Расход\n> ').lower()
+                            if user_input in self.actions_0:
+                                return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
+                            elif user_input_zap_now in self.actions_3_1_2_1:
                                 user_input_zap_now='Доход'
                                 break
                             elif user_input_zap_now in self.actions_3_1_2_2:
@@ -251,7 +270,7 @@ class Application:
                         user_input=input('Укажите номер записи, которую надо удалить:\n> ')
                         try:
                             prov_user_input=int(user_input)
-                            if prov_user_input > 0:
+                            if work_db.number_check(prov_user_input):
                                 break
                         except ValueError:
                             print('Введите номер записи:\n> ')
@@ -262,8 +281,10 @@ class Application:
         # Условие для поиска записи
         elif deytv in self.actions_4:
             while True:
-                user_input=input('Введите способ поиска записи:\n1. Доход\n2. Расход\n3. Дата\n4. Сумма\n> ').lower()
-                if user_input in self.actions_4_1:
+                user_input=input('Введите способ поиска записи (укажите номер или сам способ):\n0. Назад\n1. Доход\n2. Расход\n3. Дата\n4. Сумма\n> ').lower()
+                if user_input in self.actions_0:
+                    return 'Выберите действие (укажите номер или само действие):\n0. Назад\n1. Вывод баланса\n2. Добавление записи\n3. Редактирование записи\n4. Поиск по записям\n> '
+                elif user_input in self.actions_4_1:
                     result=work_db.search('доход', '')
                     return result
                 elif user_input in self.actions_4_2:
