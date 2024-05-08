@@ -105,8 +105,9 @@ class WorkDB:
         with open(self.file_path, 'w', encoding='utf-8') as file:
             json.dump(new_data, file, ensure_ascii=False, indent=4)
         return 'Запись успешно удалена'
-
-    def number_check(self, number):
+    
+    # Функция для проверки правильности введённого числа 
+    def number_check(self, int: number) -> bool:
         with open(self.file_path, 'r', encoding='utf-8') as f:
             data=json.load(f)
         keys=list(data.keys())
@@ -118,8 +119,8 @@ class WorkDB:
 # Основной класс взаимодействия программы с пользователем
 class Application:
     def __init__(self) -> None:
-        self.actions_0=['0', '0.', 'назад']
         self.actions=['1', '2', '3', '4', '1.', '2.', '3.', '4.', 'вывод баланса', 'добавление записи', 'редактирование записи', 'поиск по записям']
+        self.actions_0=['0', '0.', 'назад']
         self.actions_1=['1', '1.', 'вывод баланса', 'бал', 'баланс']
         self.actions_1_1=['1', '1.', 'бал', 'баланс']
         self.actions_1_2=['2', '2.', 'доход']
