@@ -1,0 +1,35 @@
+version: '3'
+services:
+
+  #второй контейнер для сервера mysql создаём просто из образа
+  db:
+    image: mysql:latest
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_DATABASE=base_docker
+      - MYSQL_USER=docker
+      - MYSQL_PASSWORD=docker
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - "3306:3306"
+    networks:
+      - blog_php_network
+  #третий контейнер для сервиса phpmyadmin, для управления базой данных, также создаём просто из образа
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - '8081:80'
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+    depends_on:
+      - db
+    networks:
+      - blog_php_network
+
+#без оступа как и services начинаеся деректива сети.Для простоты я добавлю указание использования сети по умолчанию, называемой bridge. 
+
+networks:
+  blog_php_network:
+    driver: bridge
