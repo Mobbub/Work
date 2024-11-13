@@ -1,0 +1,54 @@
+version: '3'
+services:
+
+  #второй контейнер для сервера mysql создаём просто из образа
+  db:
+    image: mysql:latest
+    restart: always
+    environment:
+      - MYSQL_DATABASE=diet_bot_db
+      - MYSQL_USER=docker
+      - MYSQL_PASSWORD=docker5WnTQeofNa1S
+      - MYSQL_ROOT_PASSWORD=root5WnTQeofNa1S
+    volumes:
+      - ./mysql:/var/lib/mysql
+      - ./diet_bot_db.sql:/docker-entrypoint-initdb.d/diet_bot_db.sql
+    ports:
+      - "3306:3306"
+    networks:
+      - project_tg_diet_bot
+  #третий контейнер для сервиса phpmyadmin, для управления базой данных, также создаём просто из образа
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    restart: always
+    ports:
+      - '8081:80'
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=db
+    depends_on:
+      - db
+    networks:
+      - project_tg_diet_bot
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      - BOT_TOKEN=7267663094:AAFLFlKynuoTv9X1yCydk3rXykIAIT3DJWE
+      - OPENAI_API_KEY=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
+      - DATABASE_URL=mysql+pymysql://docker:docker5WnTQeofNa1S@db/diet_bot_db
+    depends_on:
+      - db
+    networks:
+      - project_tg_diet_bot
+
+#без оступа как и services начинаеся деректива сети.Для простоты я добавлю указание использования сети по умолчанию, называемой bridge. 
+
+networks:
+  project_tg_diet_bot:
+    driver: bridge
