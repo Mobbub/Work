@@ -39,9 +39,9 @@ services:
     ports:
       - "5000:5000"
     environment:
-      - BOT_TOKEN=7267663094:AAFLFlKynuoTv9X1yCydk3rXykIAIT3DJWE
-      - OPENAI_API_KEY=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
-      - DATABASE_URL=mysql+pymysql://docker:docker5WnTQeofNa1S@db/diet_bot_db
+      - BOT_TOKEN=BOT_TOKEN
+      - OPENAI_API_KEY=OPENAI_API_KEY
+      - DATABASE_URL=DATABASE_URL
     depends_on:
       - db
     networks:
