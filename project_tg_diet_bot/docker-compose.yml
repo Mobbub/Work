@@ -6,10 +6,10 @@ services:
     image: mysql:latest
     restart: always
     environment:
-      - MYSQL_DATABASE=diet_bot_db
-      - MYSQL_USER=docker
-      - MYSQL_PASSWORD=docker5WnTQeofNa1S
-      - MYSQL_ROOT_PASSWORD=root5WnTQeofNa1S
+      - MYSQL_DATABASE=MYSQL_DATABASE
+      - MYSQL_USER=MYSQL_USER
+      - MYSQL_PASSWORD=MYSQL_PASSWORD
+      - MYSQL_ROOT_PASSWORD=MYSQL_ROOT_PASSWORD
     volumes:
       - ./mysql:/var/lib/mysql
       - ./diet_bot_db.sql:/docker-entrypoint-initdb.d/diet_bot_db.sql
